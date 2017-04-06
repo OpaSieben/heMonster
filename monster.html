@@ -13,22 +13,20 @@
         var movPink = [{x: -1, y: -1}, {x: 0, y: 3}, {x: -1, y: -1}];
         var movBrown = [{x: -1, y: -1}, {x: -1, y: 2}, {x: -1, y: -1}];
 
-        function move(step) {
+        function move(step, revert) {
             var vtable2 = document.getElementById("monsterTableCopy");
             var trows = vtable2.getElementsByTagName("tr");
-            var done = [];
 
             for (var x = 0; x < trows.length; x++) {
                 var row = trows[x];
                 var cells = row.getElementsByTagName("td");
-                console.log(cells.length);
                 for (var y = 0; y < cells.length; y++) {
                     var point = vtable2.rows[x].cells[y];
-                    point.style.backgroundColor = "red";
                     var monstersInCellArr = point.getElementsByTagName("img");
                     for (var z = 0; z < monstersInCellArr.length; z++) {
                         var monster = monstersInCellArr[z];
-                        if (done.find(monster) === null) {
+                        if (parseInt(monster.alt) !== parseInt(step)) {
+                            monster.alt = step;
                             var move = null;
                             switch (parseInt(monster.className)) {
                                 case 1:
@@ -50,11 +48,34 @@
                                     move = movBrown;
                                     break;
                             }
+
                             point.removeChild(monster);
-                            var nextPoint = vtable2.rows[x + move[step].x].cells[y + move[step].y];
+
+
+                            var newX = x + move[step].x;
+                            var newY = y + move[step].y;
+
+                            if (revert) {
+                                newX = x - move[step].x;
+                                newY = y - move[step].y;
+                            }
+
+
+                            if (newX > trows.length - 1)
+                                newX -= trows.length - 1;
+
+                            if (newX < 0)
+                                newX += trows.length - 1;
+
+                            if (newY > cells.length - 1)
+                                newY -= cells.length - 1;
+
+                            if (newY < 0)
+                                newY += cells.length - 1;
+
+
+                            var nextPoint = vtable2.rows[newX].cells[newY];
                             nextPoint.appendChild(monster);
-                            done.push(monster);
-                            console.log(done);
                         } else {
                             console.log("inarray");
                         }
@@ -63,6 +84,8 @@
                     }
                 }
             }
+            twoMonsters();
+
         }
 
         function twoMonsters() {
@@ -164,208 +187,7 @@
 <h2>Board</h2>
 <table id="monsterTableCopy"/>
 <table id="monsterTable" border="0" cellspacing="0" style="border-collapse: collapse; ">
-    <tbody>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td>4</td>
         <td></td>
@@ -393,18 +215,8 @@
         <td></td>
         <td></td>
         <td>1</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td>6</td>
@@ -432,18 +244,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td>4</td>
         <td>6</td>
@@ -471,18 +273,8 @@
         <td></td>
         <td>3</td>
         <td>4</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>6</td>
         <td></td>
         <td></td>
@@ -510,18 +302,8 @@
         <td></td>
         <td></td>
         <td>3</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>3</td>
         <td>2</td>
         <td>4</td>
@@ -549,18 +331,8 @@
         <td></td>
         <td>2</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -588,18 +360,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -627,18 +389,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -666,18 +418,8 @@
         <td></td>
         <td>5</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>2</td>
         <td>1</td>
         <td>5,2</td>
@@ -705,18 +447,8 @@
         <td>1</td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>3</td>
         <td>1</td>
         <td></td>
@@ -744,18 +476,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td>2</td>
         <td></td>
@@ -783,18 +505,8 @@
         <td></td>
         <td></td>
         <td>6</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>5</td>
         <td>4</td>
         <td></td>
@@ -822,18 +534,8 @@
         <td>5</td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td>2,1</td>
@@ -861,18 +563,8 @@
         <td>6,1</td>
         <td>5,2</td>
         <td>1</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>2</td>
         <td></td>
         <td></td>
@@ -900,18 +592,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>1</td>
         <td>5</td>
         <td></td>
@@ -939,18 +621,8 @@
         <td>6</td>
         <td>6,2</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td>6</td>
         <td></td>
@@ -978,18 +650,8 @@
         <td></td>
         <td>6,1</td>
         <td>3</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td>5</td>
@@ -1017,18 +679,8 @@
         <td>6</td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -1056,18 +708,8 @@
         <td>3</td>
         <td></td>
         <td>4</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>4</td>
         <td></td>
         <td></td>
@@ -1095,18 +737,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td>6,1</td>
@@ -1134,18 +766,8 @@
         <td>6</td>
         <td></td>
         <td>1</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -1173,18 +795,8 @@
         <td>1</td>
         <td>2</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>5,6</td>
         <td></td>
         <td></td>
@@ -1212,18 +824,8 @@
         <td>3,2</td>
         <td></td>
         <td>5,2</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -1251,18 +853,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td>1</td>
         <td></td>
@@ -1290,18 +882,8 @@
         <td>4</td>
         <td>3,5</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>5</td>
         <td></td>
         <td></td>
@@ -1329,18 +911,8 @@
         <td></td>
         <td>5</td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -1368,18 +940,8 @@
         <td>2,3</td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td>5</td>
         <td></td>
         <td></td>
@@ -1407,214 +969,32 @@
         <td>4</td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+    </tr>
 
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr class="border">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    </tbody>
 </table>
 <script>
     copyTable();
-    twoMonsters();
-    move(0);
+
+    move(0, false);
+    move(1, false);
+    move(2, false);
+    move(0, false);
+    move(1, false);
+    move(2, false);
+    move(0, false);
+    move(1, false);
+    move(2, false);
+    move(0, false);
+    move(1, false);
+    move(2, false);
+    move(0, false);
+    move(1, false);
+    move(2, false);
+    move(0, false);
+    move(1, false);
+    move(2, false);
+
+
 
 
 </script>
