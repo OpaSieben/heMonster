@@ -25,6 +25,7 @@
                     var monstersInCellArr = point.getElementsByTagName("img");
                     for (var z = 0; z < monstersInCellArr.length; z++) {
                         var monster = monstersInCellArr[z];
+//                        if (monstersInCellArr.length > 1)
                         if (parseInt(monster.alt) !== parseInt(step)) {
                             monster.alt = step;
                             var move = null;
@@ -61,17 +62,17 @@
                             }
 
 
-                            if (newX > trows.length - 1)
-                                newX -= trows.length - 1;
+                            if (newX >= trows.length)
+                                newX -= trows.length ;
 
                             if (newX < 0)
-                                newX += trows.length - 1;
+                                newX += trows.length ;
 
-                            if (newY > cells.length - 1)
-                                newY -= cells.length - 1;
+                            if (newY >= cells.length)
+                                newY -= cells.length ;
 
                             if (newY < 0)
-                                newY += cells.length - 1;
+                                newY += cells.length ;
 
 
                             var nextPoint = vtable2.rows[newX].cells[newY];
@@ -79,16 +80,12 @@
                         } else {
                             console.log("inarray");
                         }
-
-
                     }
                 }
             }
-            twoMonsters();
-
         }
 
-        function twoMonsters() {
+        function twoMonsters(revert) {
             var vtable2 = document.getElementById("monsterTableCopy");
             var trows = vtable2.getElementsByTagName("tr");
             for (var x = 0; x < trows.length; x++) {
@@ -96,9 +93,10 @@
                 var cells = row.getElementsByTagName("td");
                 for (var y = 0; y < cells.length; y++) {
                     var monstersInCellArr = vtable2.rows[x].cells[y].getElementsByTagName("img");
-                    if (monstersInCellArr.length > 1) {
+                    if (monstersInCellArr.length > 0) {
                         vtable2.rows[x].cells[y].style.backgroundColor = "black";
-                    }
+                    } else if (revert)
+                        vtable2.rows[x].cells[y].style.backgroundColor = "white";
                 }
             }
         }
@@ -176,10 +174,15 @@
             height: 30px;
             border: 1px solid black;
             background-color: white;
+            padding: 0;
         }
 
         #monsterTableCopy td img {
             width: 12px;
+        }
+
+        img {
+            margin: 0
         }
     </style>
 </head>
@@ -975,28 +978,14 @@
 <script>
     copyTable();
 
-    move(0, false);
-    move(1, false);
-    move(2, false);
-    move(0, false);
-    move(1, false);
-    move(2, false);
-    move(0, false);
-    move(1, false);
-    move(2, false);
-    move(0, false);
-    move(1, false);
-    move(2, false);
-    move(0, false);
-    move(1, false);
-    move(2, false);
-    move(0, false);
-    move(1, false);
-    move(2, false);
-
-
-
-
+    window.setInterval(function () {
+        move(0, false);
+////        twoMonsters();
+//        move(1, false);
+////        twoMonsters();
+//        move(2, false);
+//        twoMonsters();
+    }, 5000)
 </script>
 
 </body>
