@@ -18,12 +18,13 @@
             var trows = vtable2.getElementsByTagName("tr");
 
             for (var x = 0; x < trows.length; x++) {
-                var row = trows[x];
-                var cells = row.getElementsByTagName("td");
+                var cells = trows[x].getElementsByTagName("td");
                 for (var y = 0; y < cells.length; y++) {
                     var point = vtable2.rows[x].cells[y];
                     var monstersInCellArr = point.getElementsByTagName("img");
+
                     for (var z = 0; z < monstersInCellArr.length; z++) {
+
                         var monster = monstersInCellArr[z];
 //                        if (monstersInCellArr.length > 1)
                         if (parseInt(monster.alt) !== parseInt(step)) {
@@ -51,6 +52,7 @@
                             }
 
                             point.removeChild(monster);
+                            z = z - 1;
 
 
                             var newX = x + move[step].x;
@@ -63,26 +65,46 @@
 
 
                             if (newX >= trows.length)
-                                newX -= trows.length ;
+                                newX -= trows.length;
 
                             if (newX < 0)
-                                newX += trows.length ;
+                                newX += trows.length;
 
                             if (newY >= cells.length)
-                                newY -= cells.length ;
+                                newY -= cells.length;
 
                             if (newY < 0)
-                                newY += cells.length ;
+                                newY += cells.length;
 
 
                             var nextPoint = vtable2.rows[newX].cells[newY];
                             nextPoint.appendChild(monster);
                         } else {
-                            console.log("inarray");
+                            //console.log("inarray");
                         }
                     }
                 }
             }
+        }
+
+        function isQRcode() {
+            var vtable2 = document.getElementById("monsterTableCopy");
+
+            return (vtable2.rows[0].cells[0].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[0].cells[1].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[0].cells[2].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[0].cells[3].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[0].cells[4].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[0].cells[5].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[0].cells[6].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[1].cells[0].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[2].cells[0].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[3].cells[0].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[4].cells[0].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[5].cells[0].getElementsByTagName("img").length > 0 &&
+                vtable2.rows[6].cells[0].getElementsByTagName("img").length > 0
+            );
+
         }
 
         function twoMonsters(revert) {
@@ -978,14 +1000,16 @@
 <script>
     copyTable();
 
-    window.setInterval(function () {
+    while (1) {
         move(0, false);
-////        twoMonsters();
-//        move(1, false);
-////        twoMonsters();
-//        move(2, false);
-//        twoMonsters();
-    }, 5000)
+        if (isQRcode())break;
+        move(1, false);
+        if (isQRcode())break;
+        move(2, false);
+        if (isQRcode())break;
+    }
+
+
 </script>
 
 </body>
