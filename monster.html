@@ -13,115 +13,83 @@
         var movPink = [{x: -1, y: -1}, {x: 0, y: 3}, {x: -1, y: -1}];
         var movBrown = [{x: -1, y: -1}, {x: -1, y: 2}, {x: -1, y: -1}];
 
-        function move(step, revert) {
-            var vtable2 = document.getElementById("monsterTableCopy");
-            var trows = vtable2.getElementsByTagName("tr");
+        function move(step) {
+            var t = document.getElementById("monsterTableCopy");
+            var monsters = t.getElementsByTagName("img");
 
-            for (var x = 0; x < trows.length; x++) {
-                var cells = trows[x].getElementsByTagName("td");
-                for (var y = 0; y < cells.length; y++) {
-                    var point = vtable2.rows[x].cells[y];
-                    var monstersInCellArr = point.getElementsByTagName("img");
-
-                    for (var z = 0; z < monstersInCellArr.length; z++) {
-
-                        var monster = monstersInCellArr[z];
-//                        if (monstersInCellArr.length > 1)
-                        if (parseInt(monster.alt) !== parseInt(step)) {
-                            monster.alt = step;
-                            var move = null;
-                            switch (parseInt(monster.className)) {
-                                case 1:
-                                    move = movRed;
-                                    break;
-                                case 2:
-                                    move = movGreen;
-                                    break;
-                                case 3:
-                                    move = movBlue;
-                                    break;
-                                case 4:
-                                    move = movYellow;
-                                    break;
-                                case 5:
-                                    move = movPink;
-                                    break;
-                                case 6:
-                                    move = movBrown;
-                                    break;
-                            }
-
-                            point.removeChild(monster);
-                            z = z - 1;
-
-
-                            var newX = x + move[step].x;
-                            var newY = y + move[step].y;
-
-                            if (revert) {
-                                newX = x - move[step].x;
-                                newY = y - move[step].y;
-                            }
-
-
-                            if (newX >= trows.length)
-                                newX -= trows.length;
-
-                            if (newX < 0)
-                                newX += trows.length;
-
-                            if (newY >= cells.length)
-                                newY -= cells.length;
-
-                            if (newY < 0)
-                                newY += cells.length;
-
-
-                            var nextPoint = vtable2.rows[newX].cells[newY];
-                            nextPoint.appendChild(monster);
-                        } else {
-                            //console.log("inarray");
-                        }
-                    }
+            for (var z = 0; z < monsters.length; z++) {
+                var monster = monsters[z];
+                var move = null;
+                switch (parseInt(monster.className)) {
+                    case 1:
+                        move = movRed;
+                        break;
+                    case 2:
+                        move = movGreen;
+                        break;
+                    case 3:
+                        move = movBlue;
+                        break;
+                    case 4:
+                        move = movYellow;
+                        break;
+                    case 5:
+                        move = movPink;
+                        break;
+                    case 6:
+                        move = movBrown;
+                        break;
                 }
+
+                var y = monster.parentNode.cellIndex;
+                var x = monster.parentNode.parentNode.rowIndex;
+
+                var point = t.rows[x].cells[y];
+                point.removeChild(monster);
+
+                var limit = t.rows.length;
+
+                var newX = x + move[step].x;
+                var newY = y + move[step].y;
+
+                if (newX < 0) newX += limit;
+                if (newY < 0) newY += limit;
+
+                if (newX >= limit) newX -= limit;
+                if (newY >= limit) newY -= limit;
+
+
+                var nextPoint = t.rows[newX].cells[newY];
+                nextPoint.appendChild(monster);
             }
         }
 
         function isQRcode() {
             var vtable2 = document.getElementById("monsterTableCopy");
 
-            return (vtable2.rows[0].cells[0].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[0].cells[1].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[0].cells[2].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[0].cells[3].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[0].cells[4].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[0].cells[5].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[0].cells[6].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[1].cells[0].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[2].cells[0].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[3].cells[0].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[4].cells[0].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[5].cells[0].getElementsByTagName("img").length > 0 &&
-                vtable2.rows[6].cells[0].getElementsByTagName("img").length > 0
+            return (vtable2.rows[0].cells[0].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[1].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[2].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[3].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[4].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[5].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[6].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[7].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[8].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[9].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[10].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[11].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[0].cells[12].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[1].cells[0].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[2].cells[0].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[3].cells[0].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[4].cells[0].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[5].cells[0].getElementsByTagName("img").length === 0 &&
+                vtable2.rows[6].cells[0].getElementsByTagName("img").length === 0
             );
 
         }
 
-        function twoMonsters(revert) {
-            var vtable2 = document.getElementById("monsterTableCopy");
-            var trows = vtable2.getElementsByTagName("tr");
-            for (var x = 0; x < trows.length; x++) {
-                var row = trows[x];
-                var cells = row.getElementsByTagName("td");
-                for (var y = 0; y < cells.length; y++) {
-                    var monstersInCellArr = vtable2.rows[x].cells[y].getElementsByTagName("img");
-                    if (monstersInCellArr.length > 0) {
-                        vtable2.rows[x].cells[y].style.backgroundColor = "black";
-                    } else if (revert)
-                        vtable2.rows[x].cells[y].style.backgroundColor = "white";
-                }
-            }
-        }
 
         function copyTable() {
             var source = document.getElementById('monsterTable');
@@ -1000,13 +968,9 @@
 <script>
     copyTable();
 
-    while (1) {
-        move(0, false);
-        if (isQRcode())break;
-        move(1, false);
-        if (isQRcode())break;
-        move(2, false);
-        if (isQRcode())break;
+    for (var i = 0; i < 71; i++) {
+        move(((i+1) % 3), false);
+        if(isQRcode())break;
     }
 
 
